@@ -67,7 +67,6 @@ import logging
 from transformers.utils import logging as hf_logging
 hf_logging.set_verbosity_error()
 
-# Example usage
 test_df = pd.read_csv("/content/test.csv")
 queries = test_df["query_text"].unique()
 

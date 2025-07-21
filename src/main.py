@@ -5,7 +5,6 @@ import numpy as np
 from utils import preprocess, evaluate_metrics
 from bm25_hpo import bm25_scores
 from sentence_transformers import CrossEncoder
-from sklearn.metrics import ndcg_score, label_ranking_average_precision_score
 
 
 test_base_df = pd.read_csv("data/MyData/test.csv")
@@ -13,7 +12,7 @@ test_novice_df = pd.read_csv("data/MyData/novice_expansion.csv")
 test_expert_df = pd.read_csv("data/MyData/expert_expansion.csv")
 
 
-fine_tuned_model = r"C:\Users\filip\Projects\Neural_IR_Expansion\models\crossencoder_fineTuning_long"
+fine_tuned_model = r"C:\Users\filip\Projects\Neural_IR_Expansion\models\crossencoder_fineTuning"
 cross_encoder = CrossEncoder(fine_tuned_model)
 
 
@@ -56,8 +55,11 @@ if __name__ == "__main__":
 
     # Run main loop for all test sets
     bm25_base, re_ranker_base, cont_rel_base, bin_rel_base = main_loop(test_base_df)
+    print("Base df computed")
     bm25_nov, re_ranker_nov, cont_rel_nov, bin_rel_nov = main_loop(test_novice_df)
+    print("Novice df computed")
     bm25_expert, re_ranker_expert, cont_rel_expert, bin_rel_expert = main_loop(test_expert_df)
+    print("Expert df computed")
 
     # Evaluate metrics for all sets
     results = {}
@@ -75,7 +77,7 @@ if __name__ == "__main__":
     print("Expert df evaluated")
 
     # Write results to file
-    destination_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results\results.txt"
+    destination_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results\results_10_3.txt"
     with open(destination_path, "w") as f:
         for key, (ndcg, map_, precision, recall) in results.items():
-            f.write(f"{key}: NDCG={ndcg:.4f}, MAP={map_:.4f}, Precision={precision:.4f}, Recall={recall:.4f}\n")
+            f.write(f"{key}: NDCG={ndcg:.4f}, MAP={map_:.4f}, Precision@k={precision:.4f}, Recall@k={recall:.4f}\n")

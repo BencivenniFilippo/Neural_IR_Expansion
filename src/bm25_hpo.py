@@ -11,11 +11,8 @@ from utils import preprocess
 
 
 train_df = pd.read_csv("data/MyData/train.csv")
-val_df = pd.read_csv("data/MyData/val.csv")
-test_df = pd.read_csv("data/MyData/test.csv")
 
-
-def bm25_scores(query_tokens, answers_tokens, k1=1.8, b=0.3):
+def bm25_scores(query_tokens, answers_tokens, k1=0.7, b=0.3):
     bm25 = BM25Okapi(answers_tokens, k1=k1, b=b)
     scores = bm25.get_scores(query_tokens)
     return scores
@@ -33,7 +30,7 @@ def evaluate_bm25(df, k1, b):
         true_relevance = group["relevance"].tolist()
 
         scores = bm25_scores(query_input, answers_input, k1, b).tolist()
-        ndcgs.append(ndcg_score([true_relevance], [scores], k=None))
+        ndcgs.append(ndcg_score([true_relevance], [scores], k=10))
 
     return np.mean(ndcgs)
 
@@ -48,10 +45,9 @@ if __name__ == "__main__":
     # Run the study
     study = optuna.create_study(direction="maximize", sampler=optuna.samplers.TPESampler(seed=42))
     
-    
     # Save the results in a .txt file
-    folder_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\hpo"
-    experiment_name = "hpo_bm25"
+    folder_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results"
+    experiment_name = "hpo_bm25_10"
     destination_path = os.path.join(folder_path, experiment_name) + ".txt"
     
     with open(destination_path, "w") as f:
