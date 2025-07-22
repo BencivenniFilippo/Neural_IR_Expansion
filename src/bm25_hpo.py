@@ -49,7 +49,7 @@ if __name__ == "__main__":
     study = optuna.create_study(direction="maximize", sampler=optuna.samplers.TPESampler(seed=42))
     
     # Save the results in a .txt file
-    folder_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results"
+    folder_path = "results"
     experiment_name = "hpo_bm25_10"
     destination_path = os.path.join(folder_path, experiment_name) + ".txt"
     

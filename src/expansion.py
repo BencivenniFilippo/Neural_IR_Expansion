@@ -54,7 +54,7 @@ def batch_query_expansion(pipeline, queries, persona):
 
     print(f"Pipeline processing completed. Got {len(responses)} responses.")
 
-    folder_path = "content"
+    folder_path = "data/Expansions"
     os.makedirs(folder_path, exist_ok=True)
     experiment_name = f"{persona}_expansion"
     destination_path = os.path.join(folder_path, experiment_name) + ".txt"

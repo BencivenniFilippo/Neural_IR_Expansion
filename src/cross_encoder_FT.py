@@ -24,7 +24,7 @@ if __name__ == "__main__":
         warmup_steps=100,
     )
 
-    folder_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\models"
+    folder_path = "models"
     experiment_name = "crossencoder_fineTuning"
     destination_path = os.path.join(folder_path, experiment_name)
     os.makedirs(destination_path, exist_ok=True)

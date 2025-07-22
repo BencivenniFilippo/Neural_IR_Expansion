@@ -11,7 +11,7 @@ test_expert_df = pd.read_csv("data/MyData/expert_expansion.csv")
 
 
 # Load our fine-tuned cross-encoder
-fine_tuned_model = r"C:\Users\filip\Projects\Neural_IR_Expansion\models\crossencoder_fineTuning"
+fine_tuned_model = "models/crossencoder_fineTuning"
 cross_encoder = CrossEncoder(fine_tuned_model)
 
 # Return the BM25 and cross-encoder scores
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     print("Expert df evaluated")
 
     # Write results in a txt file
-    destination_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results\results_new.txt"
+    destination_path = "results/results_new.txt"
     with open(destination_path, "w") as f:
         for key, (ndcg, map_, precision, recall) in results.items():
             f.write(f"{key}: NDCG={ndcg:.4f}, MAP={map_:.4f}, Precision@k={precision:.4f}, Recall@k={recall:.4f}\n")
