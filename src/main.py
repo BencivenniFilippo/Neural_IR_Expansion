@@ -78,7 +78,7 @@ if __name__ == "__main__":
     print("Expert df evaluated")
 
     # Write results in a txt file
-    destination_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results\results_10.txt"
+    destination_path = r"C:\Users\filip\Projects\Neural_IR_Expansion\results\results_new.txt"
     with open(destination_path, "w") as f:
         for key, (ndcg, map_, precision, recall) in results.items():
             f.write(f"{key}: NDCG={ndcg:.4f}, MAP={map_:.4f}, Precision@k={precision:.4f}, Recall@k={recall:.4f}\n")
