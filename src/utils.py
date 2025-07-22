@@ -4,7 +4,7 @@ from sklearn.metrics import ndcg_score, label_ranking_average_precision_score
 from transformers import AutoTokenizer
 from optimum.onnxruntime import ORTModelForCausalLM
 
-
+# Preprocess text for BM25
 def preprocess(text: str) -> list:
     text = text.lower()
     text = re.sub(r"[^\w\s]", "", text)
@@ -33,7 +33,7 @@ def mean_precisionk(all_scores, all_true_relevance, k=10):
     for scores, rels in zip(all_scores, all_true_relevance):
         sorted_idx = np.argsort(scores)[::-1][:k]
         sorted_rels = np.array(rels)[sorted_idx]
-        precision = np.sum(sorted_rels) / k  # relevant@k / k
+        precision = np.sum(sorted_rels) / k
         precisions.append(precision)
     return np.mean(precisions)
 
@@ -52,7 +52,7 @@ def mean_recallk(all_scores, all_true_relevance, k=10):
     return np.mean(recalls)
 
 
-
+# Compute and return all metrics
 def evaluate_metrics(scores, cont_rel, bin_rel):
     ndcg = mean_ndcg(scores, cont_rel)
     map = mean_map(scores, bin_rel)

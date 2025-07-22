@@ -1,5 +1,4 @@
 import os
-import re
 import pandas as pd
 import optuna
 from sklearn.metrics import ndcg_score
@@ -12,11 +11,14 @@ from utils import preprocess
 
 train_df = pd.read_csv("data/MyData/train.csv")
 
+
+# Returns the scores of the BM25
 def bm25_scores(query_tokens, answers_tokens, k1=0.7, b=0.3):
     bm25 = BM25Okapi(answers_tokens, k1=k1, b=b)
     scores = bm25.get_scores(query_tokens)
     return scores
 
+# Returns the metric (nDCG) for the hyperparameter optimization
 def evaluate_bm25(df, k1, b):
     ndcgs = []
 
@@ -34,6 +36,7 @@ def evaluate_bm25(df, k1, b):
 
     return np.mean(ndcgs)
 
+# Objective function of the optuna study
 def objective(trial):
     k1 = trial.suggest_float("k1", 0.5, 2.0)
     b = trial.suggest_float("b", 0.3, 1.0)
@@ -51,8 +54,10 @@ if __name__ == "__main__":
     destination_path = os.path.join(folder_path, experiment_name) + ".txt"
     
     with open(destination_path, "w") as f:
+
+        # redirect the output of the study to our txt file
         with redirect_stdout(f):
-            study.optimize(objective, n_trials=50, show_progress_bar=True)
+            study.optimize(objective, n_trials=50, show_progress_bar=True) # Run the study
             f.write(f"Best hyperparameters: {study.best_params}\n")
             f.write(f"Best NDCG score: {study.best_value}\n")
     
